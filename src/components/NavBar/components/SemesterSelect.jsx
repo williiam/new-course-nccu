@@ -106,11 +106,12 @@ const CustomSelect = React.forwardRef(function CustomSelect(props, ref) {
   return <SelectUnstyled {...props} ref={ref} components={components} />;
 });
 
-export default function UnstyledSelectSimple() {
+export default function UnstyledSelectSimple({type, setType}) {
   return (
-    <CustomSelect defaultValue={1102}>
-      <StyledOption value={1101}>110/上</StyledOption>
-      <StyledOption value={1102}>110/下</StyledOption>
+    <CustomSelect value={type} onChange={(newType) => setType(newType)}>
+      <StyledOption value={"name"}>課程名稱</StyledOption>
+      <StyledOption value={"teacher"}>授課教師</StyledOption>
+      <StyledOption value={"unit"}>開課單位</StyledOption>
     </CustomSelect>
   );
 }

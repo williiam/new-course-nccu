@@ -1,5 +1,7 @@
 import { Box, Typography, IconButton } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import SemesterSelect from "./SemesterSelect"
 import SearchBar from "./SearchBar";
@@ -15,16 +17,47 @@ const NavBox = styled(Box)(({ theme }) => ({
 }));
 
 
-function Nav() {
+function Nav({ hideTitle }) {
+  const [search, setSearch] = useState("");
+  const [type, setType] = useState("name");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchParams.get("type")) setType(searchParams.get("type"));
+    if (searchParams.get("search")) setSearch(searchParams.get("search"));
+  }, [searchParams]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate({
+      pathname: '/search',
+      search: '?search=' + search + '&type=' + type + '&semester=1102',
+    });
+  }
+
   return (
-    <NavBox>
-      <Typography variant="h5" sx={{ fontWeight: "bold" }} color="primary">政大課程評價網</Typography>
-      <SearchBar />
-      <SemesterSelect />
-      <IconButton color="primary">
-        <SearchIcon />
-      </IconButton>
-    </NavBox>
+    <form onSubmit={handleSubmit} style={{ height: "100%" }}>
+      {
+        hideTitle ?
+          <Box sx={{ display: "flex", alignItems: "center", height: "50px" }}>
+            <SearchBar search={search} setSearch={setSearch} />
+            <IconButton color="primary" type="submit" size="large">
+              <SearchIcon fontSize="large" />
+            </IconButton>
+          </Box>
+          :
+          <NavBox>
+            <Typography variant="h5" sx={{ fontWeight: "bold" }} color="primary">政大課程評價網</Typography>
+            <SearchBar search={search} setSearch={setSearch} />
+            <SemesterSelect type={type} setType={setType} />
+            <IconButton color="primary" type="submit">
+              <SearchIcon />
+            </IconButton>
+          </NavBox>
+      }
+
+    </form>
   )
 }
 

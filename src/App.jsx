@@ -7,6 +7,7 @@ import Search from "./pages/Search"
 
 
 function App() {
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
