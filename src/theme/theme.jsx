@@ -4,11 +4,23 @@ import { createTheme } from '@mui/material/styles';
 const palette= {
   primary: {
     main: LightColor.primary,
-    text: LightColor.light,
+    contrastText: LightColor.light,
   },
   secondary: {
     main: LightColor.secondary,
-    text: LightColor.light,
+    contrastText: LightColor.light,
+  },
+  tagRequired: {
+    main: LightColor.tagRequired,
+    contrastText: LightColor.light,
+  },
+  tagPartial: {
+    main: LightColor.tagPartial,
+    contrastText: LightColor.light,
+  },
+  tagSelect: {
+    main: LightColor.tagSelect,
+    contrastText: LightColor.light,
   },
   background: {
     default: LightColor.background
@@ -24,10 +36,17 @@ export default createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 400,
-      md: 750,
-      lg: 1000,
-      xl: 1200,
+      sm: 500,
+      md: 800,
+      lg: 1100,
+      xl: 1500,
     },
+  },
+  typography: {
+    fontFamily: [
+      'Noto Sans TC',
+      'sans-serif',
+    ].join(','),
+    fontWeightRegular: 500
   },
 });

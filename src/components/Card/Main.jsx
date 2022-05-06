@@ -1,6 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, ButtonBase } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import Star from "../../assets/star.svg"
+import { useNavigate } from "react-router-dom";
 
 const CardBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -10,21 +11,34 @@ const CardBox = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "space-between",
   padding: theme.spacing(3),
-  height: "100%"
+  height: "100%",
+  cursor: "pointer"
 }));
 
-function Card({ name, teacher, unit, rate, ratePopulation }) {
+const TotalRateAnnounce = styled(Typography)(({ theme }) => ({
+  color: theme.palette.grey[400],
+}));
+
+function Card({ name, teacher, unit, rate, ratePopulation, course }) {
+  const navigate = useNavigate();
+
+  const navigateToCourse = (id) => {
+    navigate("/detail/" + id)
+  }
+
   return (
-    <CardBox>
+    <CardBox onClick={() => navigateToCourse(course)}>
       <Box>
         <Typography variant="h5" sx={{ fontWeight: "bold" }}>{name}</Typography>
         <Typography>{teacher} / {unit}</Typography>
       </Box>
-      <br></br>
-      <Box sx={{display: "flex", alignItems: "center"}}>
-        <img src={Star} style={{height: "1rem"}} />
-        <span>{rate.toFixed(1)} ({ratePopulation}人)</span>
-        
+      <br />
+      <Box>
+        <TotalRateAnnounce>總評價</TotalRateAnnounce>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <img src={Star} style={{ height: "1rem" }} />
+          <span>&nbsp;{rate} ({ratePopulation}人)</span>
+        </Box>
       </Box>
     </CardBox>
   )

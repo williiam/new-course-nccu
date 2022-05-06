@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import NavBar from "../components/NavBar/Main";
 import TypeButtonToggler from "../components/TypeButtonToggler";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -51,6 +51,13 @@ function Home() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [type, setType] = useState("name");
+  const [semester, setSemester] = useState("1102")
+
+  useEffect(() => {
+    dispatch({type: "course.search.set", search: search});
+    dispatch({type: "course.type.set", type: type});
+    dispatch({type: "course.semester.set", semester: semester});
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,7 +82,7 @@ function Home() {
           </Grid>
           <form onSubmit={handleSubmit} style={{ display: "flex", alignItems: "center", height: "80px" }}>
             <SearchBarBox>
-              <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)} />
+              <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)}  placeholder="開課系所、課程名稱、老師..."/>
             </SearchBarBox>
             <StyledIconButton color="primary" size="large" type="submit">
               <SearchIcon fontSize="large" />
