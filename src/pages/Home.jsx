@@ -3,9 +3,8 @@ import { styled } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import NavBar from "../components/NavBar/Main";
 import TypeButtonToggler from "../components/TypeButtonToggler";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 
 const HomeBox = styled(Box)(({ theme }) => ({
   height: "100vh",
@@ -47,23 +46,15 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 }));
 
 function Home() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [type, setType] = useState("name");
-  const [semester, setSemester] = useState("1102")
-
-  useEffect(() => {
-    dispatch({type: "course.search.set", search: search});
-    dispatch({type: "course.type.set", type: type});
-    dispatch({type: "course.semester.set", semester: semester});
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate({
       pathname: '/search',
-      search: '?search=' + search + '&type=' + type + '&semester=1102',
+      search: '?search=' + search + '&type=' + type,
     });
   }
 

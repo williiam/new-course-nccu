@@ -3,7 +3,9 @@ import { styled } from '@mui/material/styles';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getCourseDetail } from "../store/actions/course";
+import { getDetail } from "../store/actions/courseDetail";
+import { getRate } from "../store/actions/courseRate";
+import { isLoggedIn } from "../store/selectors/auth"
 import NavBar from "../components/NavBar/Main";
 import CourseDetailPannel from "../components/CourseDetailPannel/Main";
 import CourseRatePannel from "../components/CourseRatePannel/Main";
@@ -14,22 +16,29 @@ function Detail() {
   const params = useParams();
   const dispatch = useDispatch();
   const courseId = params.courseId;
-  const courseDetail = useSelector(state => state.course.detail);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [leftPannelHeight, setLeftPannelHeight] = useState(0);
+  const isLoggedin = useSelector(state => isLoggedIn(state));
 
   useEffect(() => {
-    setLoading(true);
-    dispatch(getCourseDetail(courseId)).then(() => {
-      setLoading(false);
-    }).catch(() => {
+    dispatch(getDetail(courseId)).then(() => {
+      if(isLoggedin) {
+        return dispatch(getRate(courseId));
+      }
+    }).catch(err => {
+      console.log(err);
+    }).then(() => {
       setLoading(false);
     });
   }, [params]);
 
   useEffect(() => {
-    console.log(leftPannelHeight);
-  }, [leftPannelHeight])
+    if(isLoggedin) {
+      dispatch(getRate(courseId)).catch(err => {
+        console.log(err);
+      })
+    }
+  }, [isLoggedin]);
 
   return (
     <DetailBox>
@@ -43,10 +52,10 @@ function Detail() {
             :
             <Grid container spacing={3}>
               <Grid item xs={12} md={8}>
-                <CourseDetailPannel loading={loading} setLeftPannelHeight={setLeftPannelHeight} />
+                <CourseDetailPannel setLeftPannelHeight={setLeftPannelHeight} />
               </Grid>
               <Grid item xs={12} md={4}>
-                <CourseRatePannel loading={loading} leftPannelHeight={leftPannelHeight} />
+                <CourseRatePannel leftPannelHeight={leftPannelHeight} />
               </Grid>
             </Grid>
         }

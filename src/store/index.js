@@ -1,15 +1,19 @@
 import { applyMiddleware, combineReducers } from 'redux';
-import { configureStore } from '@reduxjs/toolkit'
-import thunkMiddleware from 'redux-thunk'
+import { configureStore } from '@reduxjs/toolkit';
+import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from '@redux-devtools/extension';
-import auth from './auth'
-import error from './error'
-import course from "./course"
+import auth from './auth';
+import error from './error';
+import course from "./course";
+import courseDetail from "./courseDetail";
+import courseRate from "./courseRate";
 
 const App = combineReducers({
   auth,
   error,
-  course
+  course,
+  courseDetail,
+  courseRate,
 })
 
 const store = configureStore({

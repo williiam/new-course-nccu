@@ -1,11 +1,13 @@
-import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Rating, Button } from '@mui/material';
+import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Rating, Button, Box, CircularProgress } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { styled } from '@mui/material/styles';
 import { borderRadius } from '@mui/system';
 import { useSelector } from "react-redux";
+import { isLoggedIn } from "../../store/selectors/auth"
 import { useRef, useEffect } from "react"
 import CourseTypeTag from "./components/CourseTypeTag";
+import CourseRatingDialog from './components/CourseRatingDialog';
 import RadarChart from './components/RadarChart';
 
 const CourseDetailPannelBox = styled(Card)(({ theme }) => ({
@@ -32,6 +34,7 @@ const ActionButton = styled(Button)(({ theme }) => ({
   borderRadius: "10px !important",
   border: "2px solid " + theme.palette.grey[400] + " !important",
   color: theme.palette.primary.main,
+  padding: theme.spacing(0.5, 2),
   "&:hover": {
     border: "2px solid " + theme.palette.primary.main + " !important",
     backgroundColor: theme.palette.primary.main + '!important',
@@ -40,72 +43,92 @@ const ActionButton = styled(Button)(({ theme }) => ({
 }));
 
 
-function CourseDetailPannel({ loading, setLeftPannelHeight }) {
+function CourseDetailPannel({ setLeftPannelHeight }) {
   const elementRef = useRef(null);
-  const courseDetail = useSelector(state => state.course.detail.course);
-  if (!courseDetail) return ("");
+  const courseDetail = useSelector(state => state.courseDetail.detail);
+  const loading = useSelector(state => state.courseDetail.loading);
+  const loggedIn = useSelector(state => isLoggedIn(state));
+
+  const resize = () => {
+    setLeftPannelHeight(elementRef.current.clientHeight);
+  }
 
   useEffect(() => {
-    setLeftPannelHeight(elementRef.current.clientHeight)
-    window.addEventListener("resize", setLeftPannelHeight(elementRef.current.clientHeight));
-  }, []);
+    setLeftPannelHeight(elementRef.current.clientHeight);
+    window.addEventListener("resize", resize);
+  }, [])
 
   return (
     <CourseDetailPannelBox ref={elementRef}>
-      <CardHeader
-        title={courseDetail.courseNameZH_TW}
-        subheader={courseDetail.instructorZH_TW}
-        action={<CourseTypeTag courseType={courseDetail.typeOfCredit} />}
-      />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TitleTypography variant="h6">課程詳細資料</TitleTypography>
-            <Grid container sx={{ padding: "10px" }} spacing={1}>
-              <Grid item xs={12} md={6}>
-                <SubTitleTypography>開課單位</SubTitleTypography>
-                <Typography>{courseDetail.departmentZH_TW}</Typography>
+      {
+        loading ?
+          ""
+          :
+          <Box>
+            <CardHeader
+              title={courseDetail.courseNameZH_TW}
+              subheader={courseDetail.instructorZH_TW}
+              action={<CourseTypeTag courseType={courseDetail.typeOfCredit} />}
+            />
+            <CardContent sx={{ flexGrow: 1 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TitleTypography variant="h6">課程詳細資料</TitleTypography>
+                  <Grid container sx={{ padding: "10px" }} spacing={1}>
+                    <Grid item xs={12}>
+                      <SubTitleTypography>總評價</SubTitleTypography>
+                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <Box sx={{ display: "flex" }}>
+                          <Rating value={Number(courseDetail.avg_rate?.toFixed(1))} precision={0.1} readOnly />
+                          <Typography>
+                            {courseDetail.avg_rate == -1 ? "無" : courseDetail.avg_rate?.toFixed(1) + " (" + courseDetail.num_of_feedback + "人)"}
+                          </Typography>
+                        </Box>
+                        {loggedIn ? <CourseRatingDialog /> : <Box />}
+                      </Box>
+
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <SubTitleTypography>開課單位</SubTitleTypography>
+                      <Typography>{courseDetail.departmentZH_TW}</Typography>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <SubTitleTypography>時間</SubTitleTypography>
+                      <Typography>{courseDetail.sessionZH_TW}</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <SubTitleTypography>地點</SubTitleTypography>
+                      <Typography>{courseDetail.classroom}</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <SubTitleTypography>學分數</SubTitleTypography>
+                      <Typography>{courseDetail.point?.toFixed(1)}</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <SubTitleTypography>異動資訊</SubTitleTypography>
+                      <Typography>{courseDetail?.information.split("＠異動資訊Information of alteration:")[1] == "N/A" ?  "無" : courseDetail?.information.split("＠異動資訊Information of alteration:")[1]}</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <SubTitleTypography>備註</SubTitleTypography>
+                      <Typography>{courseDetail?.note.split("＠備註Note:")[1] == "N/A" ? "無" : courseDetail?.note.split("＠備註Note:")[1]}</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <RadarChart boringness={courseDetail.avg_loading} sweet={courseDetail.avg_sweet} harvest={courseDetail.avg_gain} />
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <SubTitleTypography>總評價</SubTitleTypography>
-                <Rating value={courseDetail.avg_rate.toFixed(1)} precision={0.1} readOnly />
-                <Typography>
-                  {courseDetail.avg_rate == -1 ? "無" : courseDetail.avg_rate.toFixed(1) + " (" + courseDetail.num_of_feedback + "人)"}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <SubTitleTypography>時間</SubTitleTypography>
-                <Typography>{courseDetail.sessionZH_TW}</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <SubTitleTypography>地點</SubTitleTypography>
-                <Typography>{courseDetail.classroom}</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <SubTitleTypography>學分數</SubTitleTypography>
-                <Typography>{courseDetail.point.toFixed(1)}</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <SubTitleTypography>異動資訊</SubTitleTypography>
-                <Typography>{courseDetail.information}</Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <SubTitleTypography>備註</SubTitleTypography>
-                <Typography>{courseDetail.note}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <RadarChart boringness={courseDetail.avg_loading} sweet={courseDetail.avg_sweet} harvest={courseDetail.avg_gain} />
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions sx={{ display: "flex", justifyContent: "flex-end", flexWrap: "wrap" }}>
-        <ActionButton endIcon={<OpenInNewIcon />}>選課大綱</ActionButton>
-        <ActionButton endIcon={<OpenInNewIcon />}>選課設定</ActionButton>
-        <ActionButton endIcon={<ContentCopyIcon />}>複製課程代碼</ActionButton>
-        <ActionButton disabled>加入GDSC選課系統/備選清單</ActionButton> 
-      </CardActions>
+            </CardContent>
+            <CardActions sx={{ display: "flex", justifyContent: "flex-end", flexWrap: "wrap" }}>
+              <ActionButton endIcon={<OpenInNewIcon />}>選課大綱</ActionButton>
+              <ActionButton endIcon={<OpenInNewIcon />}>選課設定</ActionButton>
+              <ActionButton endIcon={<ContentCopyIcon />}>複製課程代碼</ActionButton>
+              <ActionButton disabled>加入GDSC選課系統/備選清單</ActionButton>
+            </CardActions>
+          </Box>
+      }
+
     </CourseDetailPannelBox >
 
   );

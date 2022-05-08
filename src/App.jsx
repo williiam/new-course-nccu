@@ -1,12 +1,18 @@
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { login, logout } from './store/actions/auth';
 import theme from "./theme/theme";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
 import Detail from "./pages/Detail"
 
 function App() {
+  const dispatch = useDispatch();
+  dispatch(login()).catch(() => {
+    dispatch(logout());
+  });
 
   return (
     <ThemeProvider theme={theme}>
