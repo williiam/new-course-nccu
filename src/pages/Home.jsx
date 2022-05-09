@@ -71,7 +71,7 @@ function Home() {
           </Grid>
           <form onSubmit={handleSubmit} style={{ display: "flex", alignItems: "center", height: "80px" }}>
             <SearchBarBox>
-              <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="開課系所、課程名稱、老師..." />
+              <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="輸入課名、老師或系所" />
             </SearchBarBox>
             <StyledIconButton color="primary" size="large" type="submit">
               <SearchIcon fontSize="large" />
