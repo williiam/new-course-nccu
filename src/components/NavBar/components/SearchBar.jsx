@@ -13,8 +13,8 @@ const SearchBarBox = styled(Box)(({ theme }) => ({
 
 const SearchBarInput = styled("input")(({ theme }) => ({
     height: "100%",
-    width: "90%",
-    margin: "0px 5%",
+    width: "calc(100% - 20px)",
+    margin: "0px 20px",
     border: "none",
     backgroundColor: "transparent",
     outlineWidth: 0,
