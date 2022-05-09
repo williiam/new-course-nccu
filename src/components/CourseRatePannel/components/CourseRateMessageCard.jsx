@@ -11,7 +11,8 @@ const CourseRateMessageCardBox = styled(Box)(({ theme }) => ({
   border: "2px solid " + theme.palette.grey[400],
   backgroundColor: theme.palette.background.default,
   margin: theme.spacing(3, 0),
-  padding: theme.spacing(2)
+  padding: theme.spacing(2),
+  wordBreak: "break-all"
 }));
 
 const CourseRateMessageCardFeedbackTag = styled(Box)(({ theme }) => ({
