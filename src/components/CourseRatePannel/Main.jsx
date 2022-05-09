@@ -1,10 +1,14 @@
-import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Box, IconButton } from '@mui/material';
+import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Box, IconButton, CircularProgress, Button, Menu, MenuItem  } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import FaceIcon from '@mui/icons-material/Face';
+import SortIcon from '@mui/icons-material/Sort';
 import { styled } from '@mui/material/styles';
 import { borderRadius } from '@mui/system';
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getRate, createFeedback, thumbUp } from "../../store/actions/courseRate"
+import { isLoggedIn } from "../../store/selectors/auth"
 import CourseRateMessageCard from './components/CourseRateMessageCard';
 
 const CourseRatePannelBox = styled(Card)(({ theme }) => ({
@@ -50,47 +54,131 @@ const SearchBarInput = styled("input")(({ theme }) => ({
   outlineWidth: 0,
 }));
 
-function CourseRatePannel({ loading, leftPannelHeight }) {
-  const courseDetail = useSelector(state => state.course.detail);
+function CourseRatePannel({ leftPannelHeight }) {
+  const dispatch = useDispatch();
+  const params = useParams();
+  const courseRate = useSelector(state => state.courseRate.rate);
+  const loading = useSelector(state => state.courseRate.loading);
+  const courseId = params.courseId;
   const [comment, setComment] = useState("");
+  const [sortType, setSortType] = useState("依讚數排序");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const isLoggedin = useSelector(state => isLoggedIn(state));
 
-  var officialFeedbacks;
-  if (!courseDetail.officialFeedback) {
-    return ("");
-  } else {
-    officialFeedbacks = courseDetail.officialFeedback.map((comment, index) => {
-      return (
-        <CourseRateMessageCard key={index} source={"政大官方"} content={comment.description} thumb={comment.num_of_thumbsup} />
-      )
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (text, e) => {
+    if(text) setSortType(text);
+    setAnchorEl(null);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setComment("")
+    dispatch(createFeedback(courseId, comment)).catch(err => {
+      console.log(err);
     })
   }
 
+  const handleThumbUp = (source, id) => {
+    dispatch(thumbUp(courseId, source, id)).catch(err => {
+      console.log(err);
+    })
+  }
+
+  const officialFeedbacks = courseRate.official_feedback ? courseRate.official_feedback.map((comment, index) => {
+    if (comment.comment.replace(/\s/g, '').length) {
+      return (
+        <CourseRateMessageCard
+          key={comment.course_feedback_id}
+          id={comment.course_feedback_id}
+          source={"官方評價"}
+          content={comment.comment}
+          thumb={comment.num_of_thumbsup}
+          isThumbUp={comment.is_rated}
+          onThumbUp={handleThumbUp}
+        />
+      )
+    }
+  }) : [];
+
+  const feedbacks = courseRate.feedback ? courseRate.feedback.map((comment, index) => {
+    if (comment.comment.replace(/\s/g, '').length) {
+      return (
+        <CourseRateMessageCard
+          key={comment.course_feedback_id}
+          id={comment.course_feedback_id}
+          source={"評價網"}
+          content={comment.comment}
+          thumb={comment.num_of_thumbsup}
+          isThumbUp={comment.is_rated}
+          onThumbUp={handleThumbUp}
+        />)
+    }
+  }) : [];
+
+  const allFeedback = feedbacks.concat(officialFeedbacks);
+
+
   return (
-    <Box sx={{ height: leftPannelHeight, }}>
+    <Box sx={{ height: leftPannelHeight }}>
       <CourseRatePannelBox>
         <CardHeader
           title={
             <CourseRateCardHeaderBox>
               <TitleTypography variant="h6">課程評價</TitleTypography>
-              <Typography>依讚數排序</Typography>
+              <Box>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                  startIcon={<SortIcon />}
+                >
+                  {sortType}
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={(event) => handleClose("", event)}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  <MenuItem onClick={(event) => handleClose("依讚數排序", event)}>依讚數排序</MenuItem>
+                  <MenuItem onClick={(event) => handleClose("依時間排序", event)}>依時間排序</MenuItem>
+                </Menu>
+              </Box>
             </CourseRateCardHeaderBox>
           }
+          sx={{ paddingBottom: 0 }}
         />
-        <CardContent sx={{ overflowY: "auto", height: "100%", lexGrow: 1, position: 'relative', }}>
-          {officialFeedbacks}
+        <CardContent sx={{ overflowY: "auto", height: "100%", lexGrow: 1, position: 'relative', paddingTop: 0, paddingBottom: 0 }}>
+          {
+            !isLoggedin ? (<Box sx={{ position: "absolute", top: "40%", left: "27%" }}><span>登入以查看政大官方評價</span></Box>) :
+              loading ? (<CircularProgress sx={{ position: "absolute", top: "40%", left: "50%" }} />) :
+                !allFeedback.length ? (<Box sx={{ position: "absolute", top: "40%", left: "35%" }}><span>建立第一筆評價吧</span></Box>) :
+                  allFeedback
+          }
         </CardContent>
-        <CardActions sx={{ display: "flex", alignItems: "stretch" }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <SearchBarBox>
-              <SearchBarInput value={comment} onChange={(e) => setComment(e.target.value)} placeholder="填入你的評價吧！" />
-            </SearchBarBox>
-          </Box>
-          <IconButton disabled>
-            <FaceIcon />
-          </IconButton>
-          <IconButton>
-            <SendIcon />
-          </IconButton>
+        <CardActions>
+          <form style={{ display: "flex", alignItems: "stretch", width: "100%" }} onSubmit={handleSubmit}>
+            <Box sx={{ flexGrow: 1 }}>
+              <SearchBarBox>
+                <SearchBarInput value={comment} onChange={(e) => setComment(e.target.value)} placeholder="填入你的評價吧！" disabled={loading} />
+              </SearchBarBox>
+            </Box>
+            <IconButton disabled>
+              <FaceIcon />
+            </IconButton>
+            <IconButton type="submit" disabled={loading}>
+              <SendIcon />
+            </IconButton>
+          </form>
         </CardActions>
       </CourseRatePannelBox >
     </Box>

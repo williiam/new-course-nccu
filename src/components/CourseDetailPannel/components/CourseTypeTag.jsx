@@ -16,6 +16,7 @@ const PartialBox = styled("div")(({ theme }) => ({
 const SelectBox = styled("div")(({ theme }) => ({
   padding: theme.spacing(0.25) + " " + theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
+  color: theme.palette.grey[100],
   backgroundColor: theme.palette.tagSelect.main
 }));
 

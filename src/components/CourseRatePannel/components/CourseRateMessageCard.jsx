@@ -1,19 +1,57 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, IconButton } from '@mui/material';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { styled } from '@mui/material/styles';
 
 const CourseRateMessageCardBox = styled(Box)(({ theme }) => ({
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
   borderRadius: theme.spacing(2),
   border: "2px solid " + theme.palette.grey[400],
   backgroundColor: theme.palette.background.default,
-  margin: theme.spacing(1) + " " + theme.spacing(0),
-  padding: theme.spacing(1.5)
+  margin: theme.spacing(3, 0),
+  padding: theme.spacing(2)
 }));
 
-function CourseRateMessageCard({ source, content, thumb }) {
+const CourseRateMessageCardFeedbackTag = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: theme.spacing(-1.5),
+  left: theme.spacing(1.5),
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.grey[100],
+  padding: theme.spacing(0, 1.5)
+}));
 
+const CourseRateMessageCardOfficialFeedbackTag = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: theme.spacing(-1.5),
+  left: theme.spacing(1.5),
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.grey[100],
+  padding: theme.spacing(0, 1.5)
+}));
+
+function CourseRateMessageCard({ id, source, content, thumb, isThumbUp, onThumbUp }) {
   return (
     <CourseRateMessageCardBox>
-      {content}
+      {source == "評價網" ?
+        <CourseRateMessageCardFeedbackTag>{source}</CourseRateMessageCardFeedbackTag>
+        :
+        <CourseRateMessageCardOfficialFeedbackTag>{source}</CourseRateMessageCardOfficialFeedbackTag>
+      }
+      <Box sx={{ flexGrow: 1 }}>{content}</Box>
+      <IconButton onClick={() => onThumbUp(source == "評價網" ? "CUSTOM" : "OFFICIAL", id)}>
+        {
+          isThumbUp ?
+            <ThumbUpAltIcon />
+            :
+            <ThumbUpOffAltIcon />
+        }
+      </IconButton>
+      <Box>{thumb}</Box>
     </CourseRateMessageCardBox>
   );
 }

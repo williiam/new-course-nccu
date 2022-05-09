@@ -2,7 +2,7 @@ import { Box, Grid, Container, CircularProgress, Typography, Pagination, Paper }
 import { styled } from '@mui/material/styles';
 import NavBar from "../components/NavBar/Main";
 import { useEffect, useState } from "react";
-import { Navigate, useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { coursesPagination, coursesLength } from "../store/selectors/course"
 import { getCourse } from "../store/actions/course"
@@ -19,7 +19,6 @@ function Search() {
   const navigate = useNavigate();
   const [search, setSearch] = useState(searchParams.get("search"));
   const [type, setType] = useState(searchParams.get("type"));
-  const [semester, setSemester] = useState(searchParams.get("semester"));
   const [page, setPage] = useState(searchParams.get("page") ? searchParams.get("page") : 1);
   const loading = useSelector(state => state.course.loading);
   const courses = useSelector(state => coursesPagination(state, page));
@@ -28,22 +27,18 @@ function Search() {
   useEffect(() => {
     setSearch(searchParams.get("search"));
     setType(searchParams.get("type"));
-    setSemester(searchParams.get("semester"));
     setPage(searchParams.get("page") ? searchParams.get("page") : 1);
   }, [searchParams]);
 
   useEffect(() => {
-    dispatch({ type: "course.search.set", search: search });
-    dispatch({ type: "course.type.set", searchType: type });
-    dispatch({ type: "course.semester.set", semester: semester });
-    dispatch(getCourse(search, type, semester));
-  }, [search, type, semester]);
+    dispatch(getCourse(search));
+  }, [search]);
 
   const genCards = courses.map((course, index) => {
     return (
       <Grid item xs={12} sm={6} md={4} key={index}>
         <Card
-          course={course.course}
+          course={course.code}
           name={course.courseNameZH_TW}
           teacher={course.instructorZH_TW}
           unit={course.departmentZH_TW}
@@ -84,7 +79,7 @@ function Search() {
                 count={length}
                 onChange={(e, p) => navigate({
                   pathname: '/search',
-                  search: '?search=' + search + '&type=' + type + '&semester=' + semester + '&page=' + p,
+                  search: '?search=' + search + '&type=' + type + '&page=' + p,
                 })}
               />
             </PaginationBox>
