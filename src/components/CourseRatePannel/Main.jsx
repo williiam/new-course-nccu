@@ -89,26 +89,22 @@ function CourseRatePannel({ leftPannelHeight }) {
     })
   }
 
-  const officialFeedbacks = courseRate.official_feedback ? courseRate.official_feedback.map((comment, index) => {
-    if (comment.comment.replace(/\s/g, '').length) {
-      return {
-        ...comment,
-        source: "官方評價"
-      }
+  const officialFeedbacks = courseRate.official_feedback ? courseRate.official_feedback.filter(comment => comment.comment.replace(/\s/g, '').length).map(comment => {
+    return {
+      ...comment,
+      source: "官方評價"
     }
   }) : [];
 
-  const feedbacks = courseRate.feedback ? courseRate.feedback.map((comment, index) => {
-    if (comment.comment.replace(/\s/g, '').length) {
-      return {
-        ...comment,
-        source: "評價網"
-      }
+  const feedbacks = courseRate.feedback ? courseRate.feedback.filter(comment => comment.comment.replace(/\s/g, '').length).map(comment => {
+    return {
+      ...comment,
+      source: "評價網"
     }
   }) : [];
 
   const allFeedback = feedbacks.concat(officialFeedbacks);
-
+  
   const genCommentCards = allFeedback.sort((a, b) => {
     switch (sortType) {
       case "依讚數排序":
