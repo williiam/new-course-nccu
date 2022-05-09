@@ -34,13 +34,13 @@ const CourseRateMessageCardOfficialFeedbackTag = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0, 1.5)
 }));
 
-function CourseRateMessageCard({ id, source, content, thumb, isThumbUp, onThumbUp }) {
+function CourseRateMessageCard({ id, source, semester, content, thumb, isThumbUp, onThumbUp }) {
   return (
     <CourseRateMessageCardBox>
       {source == "評價網" ?
-        <CourseRateMessageCardFeedbackTag>{source}</CourseRateMessageCardFeedbackTag>
+        <CourseRateMessageCardFeedbackTag>{source} {semester}</CourseRateMessageCardFeedbackTag>
         :
-        <CourseRateMessageCardOfficialFeedbackTag>{source}</CourseRateMessageCardOfficialFeedbackTag>
+        <CourseRateMessageCardOfficialFeedbackTag>{source} {semester}</CourseRateMessageCardOfficialFeedbackTag>
       }
       <Box sx={{ flexGrow: 1 }}>{content}</Box>
       <IconButton onClick={() => onThumbUp(source == "評價網" ? "CUSTOM" : "OFFICIAL", id)}>
