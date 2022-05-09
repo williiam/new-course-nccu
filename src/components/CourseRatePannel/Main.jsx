@@ -1,10 +1,10 @@
-import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Box, IconButton, CircularProgress, Button, Menu, MenuItem  } from '@mui/material';
+import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Box, IconButton, CircularProgress, Button, Menu, MenuItem } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import FaceIcon from '@mui/icons-material/Face';
 import SortIcon from '@mui/icons-material/Sort';
 import { styled } from '@mui/material/styles';
 import { borderRadius } from '@mui/system';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getRate, createFeedback, thumbUp } from "../../store/actions/courseRate"
@@ -52,6 +52,7 @@ const SearchBarInput = styled("input")(({ theme }) => ({
   border: "none",
   backgroundColor: "transparent",
   outlineWidth: 0,
+  fontFamily: "Noto Sans TC"
 }));
 
 function CourseRatePannel({ leftPannelHeight }) {
@@ -70,7 +71,7 @@ function CourseRatePannel({ leftPannelHeight }) {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (text, e) => {
-    if(text) setSortType(text);
+    if (text) setSortType(text);
     setAnchorEl(null);
   };
 
@@ -90,37 +91,46 @@ function CourseRatePannel({ leftPannelHeight }) {
 
   const officialFeedbacks = courseRate.official_feedback ? courseRate.official_feedback.map((comment, index) => {
     if (comment.comment.replace(/\s/g, '').length) {
-      return (
-        <CourseRateMessageCard
-          key={comment.course_feedback_id}
-          id={comment.course_feedback_id}
-          source={"官方評價"}
-          content={comment.comment}
-          thumb={comment.num_of_thumbsup}
-          isThumbUp={comment.is_rated}
-          onThumbUp={handleThumbUp}
-        />
-      )
+      return {
+        ...comment,
+        source: "官方評價"
+      }
     }
   }) : [];
 
   const feedbacks = courseRate.feedback ? courseRate.feedback.map((comment, index) => {
     if (comment.comment.replace(/\s/g, '').length) {
-      return (
-        <CourseRateMessageCard
-          key={comment.course_feedback_id}
-          id={comment.course_feedback_id}
-          source={"評價網"}
-          content={comment.comment}
-          thumb={comment.num_of_thumbsup}
-          isThumbUp={comment.is_rated}
-          onThumbUp={handleThumbUp}
-        />)
+      return {
+        ...comment,
+        source: "評價網"
+      }
     }
   }) : [];
 
   const allFeedback = feedbacks.concat(officialFeedbacks);
 
+  const genCommentCards = allFeedback.sort((a, b) => {
+    switch (sortType) {
+      case "依讚數排序":
+        return b.num_of_thumbsup - a.num_of_thumbsup;
+      case "依時間排序":
+        return b.create_time - a.create_time;
+      case "依學年排序":
+        return b.semester - a.semester;
+    }
+  }).map((comment, index) => {
+    return (
+      <CourseRateMessageCard
+        key={comment.course_feedback_id}
+        id={comment.course_feedback_id}
+        semester={comment.semester}
+        source={comment.source}
+        content={comment.comment}
+        thumb={comment.num_of_thumbsup}
+        isThumbUp={comment.is_rated}
+        onThumbUp={handleThumbUp}
+      />)
+  });
 
   return (
     <Box sx={{ height: leftPannelHeight }}>
@@ -151,6 +161,7 @@ function CourseRatePannel({ leftPannelHeight }) {
                 >
                   <MenuItem onClick={(event) => handleClose("依讚數排序", event)}>依讚數排序</MenuItem>
                   <MenuItem onClick={(event) => handleClose("依時間排序", event)}>依時間排序</MenuItem>
+                  <MenuItem onClick={(event) => handleClose("依學年排序", event)}>依學年排序</MenuItem>
                 </Menu>
               </Box>
             </CourseRateCardHeaderBox>
@@ -161,8 +172,8 @@ function CourseRatePannel({ leftPannelHeight }) {
           {
             !isLoggedin ? (<Box sx={{ position: "absolute", top: "40%", left: "27%" }}><span>登入以查看政大官方評價</span></Box>) :
               loading ? (<CircularProgress sx={{ position: "absolute", top: "40%", left: "50%" }} />) :
-                !allFeedback.length ? (<Box sx={{ position: "absolute", top: "40%", left: "35%" }}><span>建立第一筆評價吧</span></Box>) :
-                  allFeedback
+                !genCommentCards.length ? (<Box sx={{ position: "absolute", top: "40%", left: "35%" }}><span>建立第一筆評價吧</span></Box>) :
+                  genCommentCards
           }
         </CardContent>
         <CardActions>

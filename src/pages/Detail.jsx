@@ -21,11 +21,7 @@ function Detail() {
   const isLoggedin = useSelector(state => isLoggedIn(state));
 
   useEffect(() => {
-    dispatch(getDetail(courseId)).then(() => {
-      if(isLoggedin) {
-        return dispatch(getRate(courseId));
-      }
-    }).catch(err => {
+    dispatch(getDetail(courseId)).catch(err => {
       console.log(err);
     }).then(() => {
       setLoading(false);
