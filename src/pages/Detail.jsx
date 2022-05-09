@@ -42,7 +42,7 @@ function Detail() {
       <Container maxWidth="xl" sx={{ padding: "15px" }}>
         {
           loading ?
-            <Box sx={{ position: "absolute", top: "50%", left: "50%" }}>
+            <Box sx={{ position: "absolute", top: "50%", left: 0, display: "flex", justifyContent: "center", width: "100%" }}>
               <CircularProgress />
             </Box>
             :

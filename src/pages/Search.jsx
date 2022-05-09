@@ -10,7 +10,7 @@ import Card from "../components/Card/Main"
 
 const SearchBox = styled(Box)(({ theme }) => ({}));
 const PaginationBox = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default
+  backgroundColor: theme.palette.background.default,
 }));
 
 function Search() {
@@ -57,13 +57,13 @@ function Search() {
               <Typography>查無資料</Typography>
             </Box>
             :
-            <Grid container spacing={3} sx={{paddingBottom: "70px"}}>
+            <Grid container spacing={3} sx={{ paddingBottom: "70px" }}>
               {genCards}
             </Grid>
         }
         {
           loading ?
-            <Box sx={{ position: "absolute", top: "50%", left: "50%" }}>
+            <Box sx={{ position: "absolute", top: "50%", left: 0, display: "flex", justifyContent: "center", width: "100%" }}>
               <CircularProgress />
             </Box>
             :

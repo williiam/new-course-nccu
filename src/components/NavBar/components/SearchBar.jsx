@@ -13,8 +13,8 @@ const SearchBarBox = styled(Box)(({ theme }) => ({
 
 const SearchBarInput = styled("input")(({ theme }) => ({
     height: "100%",
-    width: "95%",
-    margin: "0px 2.5%",
+    width: "calc(100% - 20px)",
+    margin: "0px 20px",
     border: "none",
     backgroundColor: "transparent",
     outlineWidth: 0,
@@ -25,7 +25,7 @@ const SearchBarInput = styled("input")(({ theme }) => ({
 function SearchBar({search, setSearch}) {
     return (
         <SearchBarBox>
-            <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="開課系所、課程名稱、老師..." />
+            <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="輸入課名、老師或系所" />
         </SearchBarBox>
     )
 }

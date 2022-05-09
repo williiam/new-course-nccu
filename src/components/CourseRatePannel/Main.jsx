@@ -104,7 +104,7 @@ function CourseRatePannel({ leftPannelHeight }) {
   }) : [];
 
   const allFeedback = feedbacks.concat(officialFeedbacks);
-  
+
   const genCommentCards = allFeedback.sort((a, b) => {
     switch (sortType) {
       case "依讚數排序":
@@ -166,8 +166,8 @@ function CourseRatePannel({ leftPannelHeight }) {
         />
         <CardContent sx={{ overflowY: "auto", height: "100%", lexGrow: 1, position: 'relative', paddingTop: 0, paddingBottom: 0 }}>
           {
-            !isLoggedin ? (<Box sx={{ position: "absolute", top: "40%", left: "27%" }}><span>登入以查看政大官方評價</span></Box>) :
-              loading ? (<CircularProgress sx={{ position: "absolute", top: "40%", left: "50%" }} />) :
+            !isLoggedin ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}><span>登入以查看政大官方評價</span></Box>) :
+              loading ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}><CircularProgress /></Box>) :
                 !genCommentCards.length ? (<Box sx={{ position: "absolute", top: "40%", left: "35%" }}><span>建立第一筆評價吧</span></Box>) :
                   genCommentCards
           }
