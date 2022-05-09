@@ -19,12 +19,10 @@ const NavBox = styled(Box)(({ theme }) => ({
 
 function Nav({ hideTitle }) {
   const [search, setSearch] = useState("");
-  const [type, setType] = useState("name");
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchParams.get("type")) setType(searchParams.get("type"));
     if (searchParams.get("search")) setSearch(searchParams.get("search"));
   }, [searchParams]);
 
@@ -32,7 +30,7 @@ function Nav({ hideTitle }) {
     e.preventDefault();
     navigate({
       pathname: '/search',
-      search: '?search=' + search + '&type=' + type + '&semester=1102',
+      search: '?search=' + search,
     });
   }
 
@@ -50,7 +48,6 @@ function Nav({ hideTitle }) {
           <NavBox>
             <Typography variant="h5" sx={{ fontWeight: "bold" }} color="primary">政大課程評價網</Typography>
             <SearchBar search={search} setSearch={setSearch} />
-            <SemesterSelect type={type} setType={setType} />
             <IconButton color="primary" type="submit">
               <SearchIcon />
             </IconButton>

@@ -52,6 +52,7 @@ const SearchBarInput = styled("input")(({ theme }) => ({
   border: "none",
   backgroundColor: "transparent",
   outlineWidth: 0,
+  fontFamily: "Noto Sans TC"
 }));
 
 function CourseRatePannel({ leftPannelHeight }) {

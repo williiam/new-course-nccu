@@ -25,6 +25,9 @@ function CourseRatingDialog() {
   const courseId = params.courseId;
   const [open, setOpen] = useState(false);
   const [rate, setRate] = useState(3.5);
+  const [sweet, setSweet] = useState(3.5);
+  const [boringness, setBoringness] = useState(3.5);
+  const [harvest, setHarvest] = useState(3.5);
   const [loading, setLoading] = useState(false);
 
   const handleClickOpen = () => {
@@ -38,7 +41,7 @@ function CourseRatingDialog() {
 
   const handleSubmit = () => {
     setLoading(true);
-    dispatch(createRate(courseId, rate)).then(() => {
+    dispatch(createRate(courseId, rate, sweet, boringness, harvest)).then(() => {
       setLoading(false);
       setOpen(false);
     })
@@ -64,6 +67,42 @@ function CourseRatingDialog() {
             <Slider
               value={rate}
               onChange={(event, newValue) => setRate(newValue)}
+              valueLabelDisplay="auto"
+              step={0.5}
+              marks
+              min={0}
+              max={5}
+            />
+          </Box>
+          <Box sx={{ paddingTop: "20px" }}>
+            <Typography>甜度</Typography>
+            <Slider
+              value={sweet}
+              onChange={(event, newValue) => setSweet(newValue)}
+              valueLabelDisplay="auto"
+              step={0.5}
+              marks
+              min={0}
+              max={5}
+            />
+          </Box>
+          <Box sx={{ paddingTop: "20px" }}>
+            <Typography>涼度</Typography>
+            <Slider
+              value={boringness}
+              onChange={(event, newValue) => setBoringness(newValue)}
+              valueLabelDisplay="auto"
+              step={0.5}
+              marks
+              min={0}
+              max={5}
+            />
+          </Box>
+          <Box sx={{ paddingTop: "20px" }}>
+            <Typography>收穫</Typography>
+            <Slider
+              value={harvest}
+              onChange={(event, newValue) => setHarvest(newValue)}
               valueLabelDisplay="auto"
               step={0.5}
               marks

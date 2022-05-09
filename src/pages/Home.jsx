@@ -37,6 +37,8 @@ const SearchBarInput = styled("input")(({ theme }) => ({
   border: "none",
   backgroundColor: "transparent",
   outlineWidth: 0,
+  fontWeight: "bold",
+  fontFamily: "Noto Sans TC"
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -48,13 +50,12 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 function Home() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
-  const [type, setType] = useState("name");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate({
       pathname: '/search',
-      search: '?search=' + search + '&type=' + type,
+      search: '?search=' + search,
     });
   }
 
@@ -67,13 +68,10 @@ function Home() {
             <Grid item xs={12} md>
               <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem" }} color="primary">政大課程評價網</Typography>
             </Grid>
-            <Grid item xs={12} md sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-              <TypeButtonToggler type={type} setType={setType} />
-            </Grid>
           </Grid>
           <form onSubmit={handleSubmit} style={{ display: "flex", alignItems: "center", height: "80px" }}>
             <SearchBarBox>
-              <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)}  placeholder="開課系所、課程名稱、老師..."/>
+              <SearchBarInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="開課系所、課程名稱、老師..." />
             </SearchBarBox>
             <StyledIconButton color="primary" size="large" type="submit">
               <SearchIcon fontSize="large" />

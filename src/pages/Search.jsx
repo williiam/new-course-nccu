@@ -18,7 +18,6 @@ function Search() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState(searchParams.get("search"));
-  const [type, setType] = useState(searchParams.get("type"));
   const [page, setPage] = useState(searchParams.get("page") ? searchParams.get("page") : 1);
   const loading = useSelector(state => state.course.loading);
   const courses = useSelector(state => coursesPagination(state, page));
@@ -26,7 +25,6 @@ function Search() {
 
   useEffect(() => {
     setSearch(searchParams.get("search"));
-    setType(searchParams.get("type"));
     setPage(searchParams.get("page") ? searchParams.get("page") : 1);
   }, [searchParams]);
 
@@ -79,7 +77,7 @@ function Search() {
                 count={length}
                 onChange={(e, p) => navigate({
                   pathname: '/search',
-                  search: '?search=' + search + '&type=' + type + '&page=' + p,
+                  search: '?search=' + search + '&page=' + p,
                 })}
               />
             </PaginationBox>

@@ -35,6 +35,7 @@ const ActionButton = styled(Button)(({ theme }) => ({
   border: "2px solid " + theme.palette.grey[400] + " !important",
   color: theme.palette.primary.main,
   padding: theme.spacing(0.5, 2),
+  margin: theme.spacing(0.5),
   "&:hover": {
     border: "2px solid " + theme.palette.primary.main + " !important",
     backgroundColor: theme.palette.primary.main + '!important',
