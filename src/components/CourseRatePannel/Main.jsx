@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRate, createFeedback, thumbUp } from "../../store/actions/courseRate"
 import { isLoggedIn } from "../../store/selectors/auth"
 import CourseRateMessageCard from './components/CourseRateMessageCard';
+import GoogleLoginContainer from './components/GoogleLoginContainer';
 
 const CourseRatePannelBox = styled(Card)(({ theme }) => ({
   height: "100%",
@@ -166,7 +167,7 @@ function CourseRatePannel({ leftPannelHeight }) {
         />
         <CardContent sx={{ overflowY: "auto", height: "100%", lexGrow: 1, position: 'relative', paddingTop: 0, paddingBottom: 0 }}>
           {
-            !isLoggedin ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}><span>登入以查看政大官方評價</span></Box>) :
+            !isLoggedin ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}><GoogleLoginContainer renderComponent={<>登入以查看政大官方評價</>}/></Box>) :
               loading ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}><CircularProgress /></Box>) :
                 !genCommentCards.length ? (<Box sx={{ position: "absolute", top: "40%", left: "35%" }}><span>建立第一筆評價吧</span></Box>) :
                   genCommentCards
@@ -175,9 +176,16 @@ function CourseRatePannel({ leftPannelHeight }) {
         <CardActions>
           <form style={{ display: "flex", alignItems: "stretch", width: "100%" }} onSubmit={handleSubmit}>
             <Box sx={{ flexGrow: 1 }}>
+              {!isLoggedin ? 
+              (
+              <GoogleLoginContainer renderComponent={<><SearchBarBox>
+                <SearchBarInput value={comment} onChange={(e) => setComment(e.target.value)} placeholder="填入你的評價吧！" disabled={loading} />
+              </SearchBarBox></>}/>
+              ) : (
               <SearchBarBox>
                 <SearchBarInput value={comment} onChange={(e) => setComment(e.target.value)} placeholder="填入你的評價吧！" disabled={loading} />
               </SearchBarBox>
+              )}
             </Box>
             <IconButton disabled>
               <FaceIcon />
