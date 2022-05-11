@@ -43,7 +43,8 @@ function Search() {
           teacher={course.instructorZH_TW}
           unit={course.departmentZH_TW}
           rate={course.avg_rate == -1 ? "無" : course.avg_rate.toFixed(1)}
-          ratePopulation={course.num_of_feedback}
+          customRatePopulationm={course.num_of_custom_feedback}
+          totalRatePopulation={course.num_of_feedback + course.num_of_custom_feedback}
         />
       </Grid>
     )
@@ -73,7 +74,7 @@ function Search() {
         }
         {
           genCards.length != 0 ?
-            <PaginationBox sx={{ position: "fixed", bottom: 0, right: 0, left: 0, padding: "10px 0px", display: "flex", justifyContent: "flex-end" }} elevation={0}>
+            <PaginationBox sx={{ position: "fixed", bottom: 0, right: 0, left: 0, padding: "15px 0px", display: "flex", justifyContent: "center" }} elevation={0}>
               <Pagination
                 page={Number(page)}
                 count={length}

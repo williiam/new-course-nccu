@@ -52,7 +52,7 @@ function CourseRateMessageCard({ id, source, semester, content, thumb, isThumbUp
             <ThumbUpOffAltIcon />
         }
       </IconButton>
-      <Box>{thumb}</Box>
+      <Box sx={{minWidth: "20px", paddingLeft: "5px"}}>{thumb}</Box>
     </CourseRateMessageCardBox>
   );
 }

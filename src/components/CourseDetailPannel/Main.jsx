@@ -57,6 +57,10 @@ function CourseDetailPannel({ setLeftPannelHeight }) {
   useEffect(() => {
     setLeftPannelHeight(elementRef.current.clientHeight);
     window.addEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    }
   }, [])
 
   return (
@@ -78,7 +82,7 @@ function CourseDetailPannel({ setLeftPannelHeight }) {
                   <Grid container sx={{ padding: "10px" }} spacing={1}>
                     <Grid item xs={12}>
                       <SubTitleTypography>總評價</SubTitleTypography>
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
                         <Box sx={{ display: "flex" }}>
                           <Rating value={Number(courseDetail.avg_rate?.toFixed(1))} precision={0.1} readOnly />
                           <Typography sx={{paddingLeft: "10px"}}>
@@ -122,8 +126,8 @@ function CourseDetailPannel({ setLeftPannelHeight }) {
               </Grid>
             </CardContent>
             <CardActions sx={{ display: "flex", justifyContent: "flex-end", flexWrap: "wrap" }}>
-              <ActionButton endIcon={<OpenInNewIcon />}>選課大綱</ActionButton>
-              <ActionButton endIcon={<OpenInNewIcon />}>選課設定</ActionButton>
+              <ActionButton endIcon={<OpenInNewIcon />}>課程大綱</ActionButton>
+              {/*<ActionButton endIcon={<OpenInNewIcon />}>選課設定</ActionButton>*/}
               <ActionButton endIcon={<ContentCopyIcon />}>複製課程代碼</ActionButton>
               <ActionButton disabled>加入GDSC選課系統/備選清單</ActionButton>
             </CardActions>
