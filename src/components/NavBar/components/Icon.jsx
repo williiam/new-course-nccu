@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../../assets/logo.svg";
 
 const IconBox = styled(Box)(({ theme }) => ({
-  padding: "10px",
+  padding: "12px 12px 12px 13px",
   borderRadius: "50%",
   maxWidth: "50px",
   maxHeight: "50px",
