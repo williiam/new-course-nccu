@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardContent, CardActions, Grid, Typography, Box, IconButton, CircularProgress, Button, Menu, MenuItem } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import FaceIcon from '@mui/icons-material/Face';
 import SortIcon from '@mui/icons-material/Sort';
 import { styled } from '@mui/material/styles';
 import { borderRadius } from '@mui/system';
@@ -183,9 +182,6 @@ function CourseRatePannel({ leftPannelHeight }) {
                 <SearchBarInput value={comment} onChange={(e) => setComment(e.target.value)} placeholder="填入你的評價吧！" disabled={loading} />
               </SearchBarBox>
             </Box>
-            <IconButton disabled>
-              <FaceIcon />
-            </IconButton>
             <IconButton type="submit" disabled={loading}>
               <SendIcon />
             </IconButton>
