@@ -9,6 +9,7 @@ import { isLoggedIn } from "../store/selectors/auth"
 import NavBar from "../components/NavBar/Main";
 import CourseDetailPannel from "../components/CourseDetailPannel/Main";
 import CourseRatePannel from "../components/CourseRatePannel/Main";
+import AuthModal from "../components/AuthDialog/Main";
 
 const DetailBox = styled("div")(({ theme }) => ({}));
 
@@ -19,6 +20,7 @@ function Detail() {
   const [loading, setLoading] = useState(true);
   const [leftPannelHeight, setLeftPannelHeight] = useState(0);
   const isLoggedin = useSelector(state => isLoggedIn(state));
+  const open = useSelector(state => state.auth.dialogOpen);
 
   useEffect(() => {
     dispatch(getDetail(courseId)).catch(err => {
@@ -56,6 +58,7 @@ function Detail() {
             </Grid>
         }
       </Container>
+      <AuthModal open={open} handleClose={() => dispatch({type: "auth.dialog.close"})} />
     </DetailBox>
   );
 }

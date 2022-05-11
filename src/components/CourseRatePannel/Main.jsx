@@ -55,6 +55,8 @@ const SearchBarInput = styled("input")(({ theme }) => ({
   fontFamily: "Noto Sans TC"
 }));
 
+const LoginIndicatorButton = styled(Button)(({ theme }) => ({}));
+
 function CourseRatePannel({ leftPannelHeight }) {
   const dispatch = useDispatch();
   const params = useParams();
@@ -166,7 +168,9 @@ function CourseRatePannel({ leftPannelHeight }) {
         />
         <CardContent sx={{ overflowY: "auto", height: "100%", lexGrow: 1, position: 'relative', paddingTop: 0, paddingBottom: 0 }}>
           {
-            !isLoggedin ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}><span>登入以查看政大官方評價</span></Box>) :
+            !isLoggedin ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
+              <LoginIndicatorButton onClick={() => dispatch({type: "auth.dialog.open"})}>登入以查看政大官方評價</LoginIndicatorButton>
+            </Box>) :
               loading ? (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}><CircularProgress /></Box>) :
                 !genCommentCards.length ? (<Box sx={{ position: "absolute", top: "40%", left: "35%" }}><span>建立第一筆評價吧</span></Box>) :
                   genCommentCards

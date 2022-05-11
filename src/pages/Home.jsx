@@ -5,6 +5,8 @@ import NavBar from "../components/NavBar/Main";
 import TypeButtonToggler from "../components/TypeButtonToggler";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import AuthModal from "../components/AuthDialog/Main";
 
 const HomeBox = styled(Box)(({ theme }) => ({
   height: "100vh",
@@ -49,7 +51,9 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 
 function Home() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const open = useSelector(state => state.auth.dialogOpen);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -79,6 +83,7 @@ function Home() {
           </form>
         </SearchBox>
       </Box>
+      <AuthModal open={open} handleClose={() => dispatch({type: "auth.dialog.close"})} />
     </HomeBox>
   )
 

@@ -4,9 +4,10 @@ import NavBar from "../components/NavBar/Main";
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { coursesPagination, coursesLength } from "../store/selectors/course"
-import { getCourse } from "../store/actions/course"
-import Card from "../components/Card/Main"
+import { coursesPagination, coursesLength } from "../store/selectors/course";
+import { getCourse } from "../store/actions/course";
+import Card from "../components/Card/Main";
+import AuthModal from "../components/AuthDialog/Main";
 
 const SearchBox = styled(Box)(({ theme }) => ({}));
 const PaginationBox = styled(Paper)(({ theme }) => ({
@@ -22,6 +23,7 @@ function Search() {
   const loading = useSelector(state => state.course.loading);
   const courses = useSelector(state => coursesPagination(state, page));
   const length = useSelector(state => coursesLength(state));
+  const open = useSelector(state => state.auth.dialogOpen);
 
   useEffect(() => {
     setSearch(searchParams.get("search"));
@@ -85,6 +87,7 @@ function Search() {
             ""
         }
       </Container>
+      <AuthModal open={open} handleClose={() => dispatch({type: "auth.dialog.close"})} />
     </SearchBox>
 
   )

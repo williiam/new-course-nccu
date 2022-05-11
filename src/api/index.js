@@ -1,7 +1,8 @@
 import axios from "axios"
+import jwt_decode from "jwt-decode";
 
-axios.defaults.baseURL = "https://desolate-stream-68947.herokuapp.com"
-axios.defaults.headers.post["Content-Type"] = "application/json"
+axios.defaults.baseURL = "";
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
 /*
   Function Usage Sample:
@@ -16,6 +17,12 @@ axios.defaults.headers.post["Content-Type"] = "application/json"
 */
 
 const ajax = (url, method, options) => {
+  const authToken = localStorage.getItem("authToken") ? localStorage.getItem("authToken") : "";
+  if(authToken) {
+    const expTime = jwt_decode(authToken).exp * 1000
+    const currentTime = new Date().getTime();
+    console.log(expTime, currentTime);
+  }
   if (options !== undefined) {
     var { params = {}, data = {} } = options
   } else {
