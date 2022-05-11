@@ -4,9 +4,10 @@ import NavBar from "../components/NavBar/Main";
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { coursesPagination, coursesLength } from "../store/selectors/course"
-import { getCourse } from "../store/actions/course"
-import Card from "../components/Card/Main"
+import { coursesPagination, coursesLength } from "../store/selectors/course";
+import { getCourse } from "../store/actions/course";
+import Card from "../components/Card/Main";
+import AuthModal from "../components/AuthDialog/Main";
 
 const SearchBox = styled(Box)(({ theme }) => ({}));
 const PaginationBox = styled(Paper)(({ theme }) => ({
@@ -22,6 +23,7 @@ function Search() {
   const loading = useSelector(state => state.course.loading);
   const courses = useSelector(state => coursesPagination(state, page));
   const length = useSelector(state => coursesLength(state));
+  const open = useSelector(state => state.auth.dialogOpen);
 
   useEffect(() => {
     setSearch(searchParams.get("search"));
@@ -41,7 +43,8 @@ function Search() {
           teacher={course.instructorZH_TW}
           unit={course.departmentZH_TW}
           rate={course.avg_rate == -1 ? "無" : course.avg_rate.toFixed(1)}
-          ratePopulation={course.num_of_feedback}
+          customRatePopulationm={course.num_of_custom_feedback}
+          totalRatePopulation={course.num_of_feedback + course.num_of_custom_feedback}
         />
       </Grid>
     )
@@ -71,7 +74,7 @@ function Search() {
         }
         {
           genCards.length != 0 ?
-            <PaginationBox sx={{ position: "fixed", bottom: 0, right: 0, left: 0, padding: "10px 0px", display: "flex", justifyContent: "flex-end" }} elevation={0}>
+            <PaginationBox sx={{ position: "fixed", bottom: 0, right: 0, left: 0, padding: "15px 0px", display: "flex", justifyContent: "center" }} elevation={0}>
               <Pagination
                 page={Number(page)}
                 count={length}
@@ -85,6 +88,7 @@ function Search() {
             ""
         }
       </Container>
+      <AuthModal open={open} handleClose={() => dispatch({type: "auth.dialog.close"})} />
     </SearchBox>
 
   )

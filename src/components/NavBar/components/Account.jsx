@@ -1,10 +1,9 @@
 import { Box, Avatar } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { isLoggedIn, googleProfile } from "../../../store/selectors/auth";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AuthModal from "../../AuthDialog/Main"
 
 const AccountBox = styled(Box)(({ theme }) => ({
   padding: "10px",
@@ -24,12 +23,12 @@ const AccountIcon = styled(AccountCircleIcon)(({ theme }) => ({
 
 
 function Account() {
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
   const loggedIn = useSelector(state => isLoggedIn(state));
   const avatar = useSelector(state => googleProfile(state)).picture;
-
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
+  
+  const handleOpen = () => dispatch({type: "auth.dialog.open"});
 
   return (
     <Box>
@@ -41,7 +40,6 @@ function Account() {
             <AccountIcon />
           </AccountBox>
       }
-      <AuthModal open={open} handleClose={handleClose} />
     </Box>
   )
 }

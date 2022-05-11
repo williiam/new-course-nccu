@@ -7,17 +7,17 @@ export default defineConfig({
   server: {
     proxy: {
       '/course': {
-        target: 'https://desolate-stream-68947.herokuapp.com',
+        target: 'https://course-nccu.ebg.tw',
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, '')
       },
       '/user': {
-        target: 'https://desolate-stream-68947.herokuapp.com',
+        target: 'https://course-nccu.ebg.tw',
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, '')
       },
       '/api': {
-        target: 'https://desolate-stream-68947.herokuapp.com',
+        target: 'https://course-nccu.ebg.tw',
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, '')
       },

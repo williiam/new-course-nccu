@@ -1,6 +1,7 @@
 const auth_state = {
   profile: null,
-  googleProfile: null
+  googleProfile: null,
+  dialogOpen: false,
 }
 
 const profile = (state = {}, action) => {
@@ -10,6 +11,17 @@ const profile = (state = {}, action) => {
     case "auth.profile.clear":
       return null;
     case "auth.profile.get":
+    default:
+      return state;
+  }
+}
+
+const dialogOpen = (state = false, action) => {
+  switch (action.type) {
+    case "auth.dialog.open":
+      return true;
+    case "auth.dialog.close":
+      return false;
     default:
       return state;
   }
@@ -40,6 +52,11 @@ const auth = (state = auth_state, action) => {
     case "auth.googleProfile.get":
       return Object.assign({}, state, {
         googleProfile: googleProfile(state.googleProfile, action)
+      });
+    case "auth.dialog.open":
+    case "auth.dialog.close":
+      return Object.assign({}, state, {
+        dialogOpen: dialogOpen(state.dialogOpen, action)
       });
     default:
       return state;

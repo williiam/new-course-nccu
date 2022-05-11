@@ -1,5 +1,6 @@
 import { Box, Typography, ButtonBase } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import Star from "../../assets/star.svg"
 import { useNavigate } from "react-router-dom";
 
@@ -17,9 +18,10 @@ const CardBox = styled(Box)(({ theme }) => ({
 
 const TotalRateAnnounce = styled(Typography)(({ theme }) => ({
   color: theme.palette.grey[400],
+  fontSize: "0.9rem"
 }));
 
-function Card({ name, teacher, unit, rate, ratePopulation, course }) {
+function Card({ name, teacher, unit, rate, customRatePopulationm, totalRatePopulation, course }) {
   const navigate = useNavigate();
 
   const navigateToCourse = (id) => {
@@ -35,9 +37,15 @@ function Card({ name, teacher, unit, rate, ratePopulation, course }) {
       <br />
       <Box>
         <TotalRateAnnounce>總評價</TotalRateAnnounce>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <img src={Star} style={{ height: "1rem" }} />
-          <span>&nbsp;{rate} ({ratePopulation}人)</span>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <img src={Star} style={{ height: "1rem" }} />
+            <span>&nbsp;{rate} ({customRatePopulationm}人)</span>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <ChatOutlinedIcon />
+            <span>&nbsp;{totalRatePopulation}</span>
+          </Box>
         </Box>
       </Box>
     </CardBox>

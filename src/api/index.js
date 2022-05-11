@@ -1,7 +1,7 @@
 import axios from "axios"
 
-axios.defaults.baseURL = "https://desolate-stream-68947.herokuapp.com"
-axios.defaults.headers.post["Content-Type"] = "application/json"
+axios.defaults.baseURL = "";
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
 /*
   Function Usage Sample:
@@ -19,13 +19,13 @@ const ajax = (url, method, options) => {
   if (options !== undefined) {
     var { params = {}, data = {} } = options
   } else {
-    params = data = null
+    params = data = null;
   }
   return new Promise((resolve, reject) => {
     axios({ url, method, params, data }).then(res => {
-      resolve(res)
+      resolve(res);
     }, res => {
-      reject(res)
+      reject(res);
     })
   })
 }
