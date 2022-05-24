@@ -100,7 +100,7 @@ function CourseDetailPannel({ setLeftPannelHeight }) {
                         <Box sx={{ display: "flex" }}>
                           <Rating value={Number(courseDetail.avg_rate?.toFixed(1))} precision={0.1} readOnly />
                           <Typography sx={{paddingLeft: "10px"}}>
-                            {courseDetail.avg_rate == -1 ? "無" : courseDetail.avg_rate?.toFixed(1) + " (" + courseDetail.num_of_feedback + "人)"}
+                            {courseDetail.avg_rate == -1 ? "無" : courseDetail.avg_rate?.toFixed(1) + " (" + courseDetail.num_of_custom_feedback + "人)"}
                           </Typography>
                         </Box>
                         {loggedIn ? <CourseRatingDialog /> : <Box />}

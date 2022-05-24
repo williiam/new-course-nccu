@@ -38,9 +38,9 @@ function Card({ name, teacher, unit, rate, customRatePopulationm, totalRatePopul
       <Box>
         <TotalRateAnnounce>總評價</TotalRateAnnounce>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", flexWrap: "nowrap" }}>
             <img src={Star} style={{ height: "1rem" }} />
-            <span>&nbsp;{rate} ({customRatePopulationm}人)</span>
+            <span>&nbsp;{rate} ({customRatePopulationm} 人)</span>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ChatOutlinedIcon />
