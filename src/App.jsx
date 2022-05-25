@@ -6,6 +6,7 @@ import { login, logout } from './store/actions/auth';
 import theme from "./theme/theme";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
+import Share from "./pages/Share";
 import Detail from "./pages/Detail";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/share" element={<Share />} />
           <Route path="/search" element={<Search />} />
           <Route path="/detail" >
             <Route path=":courseId" element={<Detail />} />
