@@ -71,7 +71,7 @@ function Home() {
           <Grid container spacing={3}>
             <Grid item xs={12} md>
               <Typography sx={{ fontWeight: "bold", fontSize: "2rem", textAlign: "center" }} color="#757575">點擊以下連結前往評價網</Typography>
-              <Link href="https://course-nccu.com" variant="body2">
+              <Link href="https://course-nccu.com" target="_blank" variant="body2">
               <Typography sx={{ fontWeight: "bold", fontSize: "2.3rem", textAlign: "center" }} color="primary">https://course-nccu.com</Typography>
               </Link>
             </Grid>
