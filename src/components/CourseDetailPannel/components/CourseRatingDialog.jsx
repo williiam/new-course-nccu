@@ -3,9 +3,10 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createRate } from "../../../store/actions/courseRate";
-import { getDetail } from "../../../store/actions/courseDetail"
+import { getDetail } from "../../../store/actions/courseDetail";
+import { isLoggedIn } from "../../../store/selectors/auth"
 
 const ActionButton = styled(Button)(({ theme }) => ({
   borderRadius: "10px !important",
@@ -23,6 +24,7 @@ function CourseRatingDialog() {
   const params = useParams()
   const dispatch = useDispatch();
   const courseId = params.courseId;
+  const loggedIn = useSelector(state => isLoggedIn(state));
   const [open, setOpen] = useState(false);
   const [rate, setRate] = useState(3.5);
   const [sweet, setSweet] = useState(3.5);
@@ -31,7 +33,11 @@ function CourseRatingDialog() {
   const [loading, setLoading] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if(!loggedIn) {
+      dispatch({type: "auth.dialog.open"});
+    }else {
+      setOpen(true);
+    }
   };
 
   const handleClose = (event, reason) => {

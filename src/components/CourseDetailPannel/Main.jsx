@@ -89,7 +89,7 @@ function CourseDetailPannel({ setLeftPannelHeight }) {
                             {courseDetail.avg_rate == -1 ? "無" : courseDetail.avg_rate?.toFixed(1) + " (" + courseDetail.num_of_custom_feedback + "人)"}
                           </Typography>
                         </Box>
-                        {loggedIn ? <CourseRatingDialog /> : <Box />}
+                        <CourseRatingDialog />
                       </Box>
 
                     </Grid>

@@ -32,7 +32,7 @@ function Login({ onClose }) {
           </DialogContent>
           :
           <Box>
-            <DialogTitle>
+            <DialogTitle sx={{textAlign: "center"}}>
               登入
             </DialogTitle>
             <DialogContent>

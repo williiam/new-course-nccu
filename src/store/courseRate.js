@@ -1,5 +1,7 @@
 const courseRate_state = {
   rate: {},
+  comments: [],
+  tab: "rate",
   loading: false
 }
 
@@ -42,6 +44,28 @@ const rate = (state = {}, action) => {
   }
 }
 
+const comments = (state = [], action) => {
+  switch (action.type) {
+    case "courseRate.comments.set":
+      return [...action.comments];
+    case "courseRate.comments.clear":
+      return [];
+    default:
+      return state;
+  }
+}
+
+const tab = (state = false, action) => {
+  switch (action.type) {
+    case "courseRate.tab.rate":
+      return "rate";
+    case "courseRate.tab.comment":
+      return "comment";
+    default:
+      return state;
+  }
+}
+
 const loading = (state = false, action) => {
   switch (action.type) {
     case "courseRate.loading":
@@ -61,6 +85,16 @@ const courseRate = (state = courseRate_state, action) => {
     case "courseRate.rate.thumbDown":
       return Object.assign({}, state, {
         rate: rate(state.rate, action)
+      });
+    case "courseRate.comments.set":
+    case "courseRate.comments.clear":
+      return Object.assign({}, state, {
+        comments: comments(state.comments, action)
+      });
+    case "courseRate.tab.rate":
+    case "courseRate.tab.comment":
+      return Object.assign({}, state, {
+        tab: tab(state.tab, action)
       });
     case "courseRate.loading":
     case "courseRate.done":
