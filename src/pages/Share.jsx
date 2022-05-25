@@ -66,20 +66,19 @@ function Home() {
 
   return (
     <HomeBox>
-      <NavBar />
       <Box sx={{ flexGrow: 1 }}>
         <SearchBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md>
-              <Typography sx={{ fontWeight: "bold", fontSize: "2.2rem", textAlign: "center" }} color="#757575">點擊以下連結前往評價網</Typography>
+              <Typography sx={{ fontWeight: "bold", fontSize: "2rem", textAlign: "center" }} color="#757575">點擊以下連結前往評價網</Typography>
               <Link href="https://course-nccu.com" variant="body2">
-              <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem", textAlign: "center" }} color="primary">https://course-nccu.com</Typography>
+              <Typography sx={{ fontWeight: "bold", fontSize: "2.3rem", textAlign: "center" }} color="primary">https://course-nccu.com</Typography>
               </Link>
             </Grid>
           </Grid>
         </SearchBox>
       </Box>
-      <AuthModal open={open} handleClose={() => dispatch({type: "auth.dialog.close"})} />
+      {/* <AuthModal open={open} handleClose={() => dispatch({type: "auth.dialog.close"})} /> */}
     </HomeBox>
   )
 
