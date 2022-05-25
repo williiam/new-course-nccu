@@ -63,6 +63,20 @@ function CourseDetailPannel({ setLeftPannelHeight }) {
     }
   }, [])
 
+  const handleClick = () => {
+    const semester_code = courseDetail.semester;
+    const course_code = courseDetail.code;
+    const year = semester_code.slice(0, 3);
+    const semester = semester_code.slice(3, 4);
+    const sixcode = course_code.slice(0, 6);
+    const twocode = course_code.slice(6, 8);
+    const onecode = course_code.slice(8, 9);
+
+    window.open(
+      `https://newdoc.nccu.edu.tw/teaschm/${semester_code}/schmPrv.jsp-yy=${year}&smt=${semester}&num=${sixcode}&gop=${twocode}&s=${onecode}.html`
+    );
+  }
+
   return (
     <CourseDetailPannelBox ref={elementRef}>
       {
@@ -126,7 +140,7 @@ function CourseDetailPannel({ setLeftPannelHeight }) {
               </Grid>
             </CardContent>
             <CardActions sx={{ display: "flex", justifyContent: "flex-end", flexWrap: "wrap" }}>
-              <ActionButton endIcon={<OpenInNewIcon />}>課程大綱</ActionButton>
+              <ActionButton onClick={()=>handleClick()} endIcon={<OpenInNewIcon />}>課程大綱</ActionButton>
               {/*<ActionButton endIcon={<OpenInNewIcon />}>選課設定</ActionButton>*/}
               <ActionButton endIcon={<ContentCopyIcon />}>複製課程代碼</ActionButton>
               <ActionButton disabled>加入GDSC選課系統/備選清單</ActionButton>
