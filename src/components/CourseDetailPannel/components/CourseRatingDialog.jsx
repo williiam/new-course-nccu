@@ -55,7 +55,7 @@ function CourseRatingDialog() {
 
   return (
     <Box>
-      <ActionButton onClick={handleClickOpen}>填寫評價</ActionButton>
+      <ActionButton onClick={handleClickOpen}>我要評分</ActionButton>
       <Dialog
         fullWidth
         maxWidth="md"
@@ -65,7 +65,7 @@ function CourseRatingDialog() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          填寫課程評價
+        填寫評分
         </DialogTitle>
         <DialogContent>
           <Box sx={{ paddingTop: "20px" }}>
